@@ -1,0 +1,52 @@
+/* 
+  Localizable.strings
+  PASCAL
+
+  Created by Vaibhav on 11/01/22.
+  
+*/
+// MARK: - Device list Screen
+"DEVICE LIST" = "DEVICE LIST";
+"No device found, plese scan again!" = "No device found, scan again!";
+"Scan" = "Scan";
+"Share Logs" = "Share Logs";
+"Share History" = "Share History";
+"Delete History" = "Delete History";
+"Deleted history successfully!" = "Deleted !";
+"Stop" = "Stop";
+
+// MARK: - Weight Screen
+"Weight alarm enabled!" = "Enabled!";
+"Weight alarm disabled!" = "Disabled!";
+"Unit type saved!" = "Saved!";
+"Language saved!" = "Saved!";
+"Record saved successfully!" = "Saved!";
+"Channel A Limit Saved." = "Saved!";
+"Channel B Limit Saved." = "Saved!";
+"Save" = "Save";
+"Channel" = "Channel";
+"Limits" = "Limits";
+"Total" = "Total";
+"Gross" = "Gross";
+"Net" = "Net";
+
+
+// MARK: - Side menu
+"Scale connection" = "Connection";
+"Weights" = "Weights";
+"History" = "History";
+"Settings" = "Settings";
+"Help" = "Help";
+
+
+// MARK: - Setting Screen
+"Unit Type" = "Unit Type";
+"Alarm Sound" = "Alarm Sound";
+"Language" = "Language";
+"KG" = "Metric";
+"LBS" = "Imperial";
+
+// MARK: - History Screen
+"Ops! No weight data found!" = "No saved data found!";
+
+"Device" = "Device Name:";

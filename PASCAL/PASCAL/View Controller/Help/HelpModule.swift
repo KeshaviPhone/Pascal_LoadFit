@@ -1,0 +1,28 @@
+//
+//  HelpModule.swift
+//  PASCAL
+//
+//  Created by My Mac on 15/12/21.
+//
+
+import Foundation
+import UIKit
+
+final class HelpModule {
+    
+    // MARK: - Properties
+    private let view: HelpVC
+    private let presenter: HelpPresenter
+    
+    // MARK: - Init / Deinit methods
+    init() {
+        view = R.storyboard.main.helpVC()!
+        presenter = HelpPresenter(with: view, router: view)
+        view.presenter = presenter
+    }
+    
+    // MARK: - Public methods
+    func viewController() -> UIViewController {
+        return view
+    }
+}

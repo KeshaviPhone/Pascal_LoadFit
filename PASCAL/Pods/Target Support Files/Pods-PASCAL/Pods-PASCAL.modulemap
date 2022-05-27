@@ -1,0 +1,6 @@
+framework module Pods_PASCAL {
+  umbrella header "Pods-PASCAL-umbrella.h"
+
+  export *
+  module * { export * }
+}

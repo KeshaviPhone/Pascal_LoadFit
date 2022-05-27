@@ -1,0 +1,108 @@
+
+/* Class = "UILabel"; text = "Net"; ObjectID = "2TO-Fe-HNu"; */
+"2TO-Fe-HNu.text" = "Net";
+
+/* Class = "UILabel"; text = "Ops! No weight data found!"; ObjectID = "47U-gf-ji9"; */
+"47U-gf-ji9.text" = "Ops! No weight data found!";
+
+/* Class = "UILabel"; text = "Alarm Sound"; ObjectID = "554-u7-Uy9"; */
+"554-u7-Uy9.text" = "Alarm Sound";
+
+/* Class = "UILabel"; text = "Language"; ObjectID = "60K-g3-XWd"; */
+"60K-g3-XWd.text" = "Language";
+
+/* Class = "UIButton"; normalTitle = "KG"; ObjectID = "789-oW-rZJ"; */
+"789-oW-rZJ.normalTitle" = "KG";
+
+/* Class = "UIButton"; normalTitle = "HELP"; ObjectID = "7Gr-BK-gCI"; */
+"7Gr-BK-gCI.normalTitle" = "HELP";
+
+/* Class = "UIButton"; normalTitle = "A"; ObjectID = "7Ya-O7-fkg"; */
+"7Ya-O7-fkg.normalTitle" = "A";
+
+/* Class = "UIButton"; normalTitle = "B"; ObjectID = "9uG-K0-I6c"; */
+"9uG-K0-I6c.normalTitle" = "B";
+
+/* Class = "UIButton"; normalTitle = "SAVE"; ObjectID = "DE6-b3-YcY"; */
+"DE6-b3-YcY.normalTitle" = "SAVE";
+
+/* Class = "UILabel"; text = "73530"; ObjectID = "EiI-Xh-6Rm"; */
+"EiI-Xh-6Rm.text" = "73530";
+
+/* Class = "UILabel"; text = "73530"; ObjectID = "GB5-Ea-4dx"; */
+"GB5-Ea-4dx.text" = "73530";
+
+/* Class = "UILabel"; text = "Channel"; ObjectID = "Gsi-FV-3cF"; */
+"Gsi-FV-3cF.text" = "Channel";
+
+/* Class = "UILabel"; text = "Unit Type"; ObjectID = "J21-Nr-wCf"; */
+"J21-Nr-wCf.text" = "Unit Type";
+
+/* Class = "UILabel"; text = "Channel"; ObjectID = "NB1-ud-1ux"; */
+"NB1-ud-1ux.text" = "Channel";
+
+/* Class = "UILabel"; text = "Total 2940 KG GROSS"; ObjectID = "OXd-Fa-7v5"; */
+"OXd-Fa-7v5.text" = "Total 2940 KG GROSS";
+
+/* Class = "UIButton"; normalTitle = "Scan"; ObjectID = "RtP-Hy-kJ3"; */
+"RtP-Hy-kJ3.normalTitle" = "Scan";
+
+/* Class = "UILabel"; text = "Ex 500"; ObjectID = "Sgh-gx-r0h"; */
+"Sgh-gx-r0h.text" = "Ex 500";
+
+/* Class = "UILabel"; text = "Setting"; ObjectID = "TbF-7a-JDh"; */
+"TbF-7a-JDh.text" = "Setting";
+
+/* Class = "UITextField"; placeholder = "Ex 500"; ObjectID = "UdG-Lp-FUx"; */
+"UdG-Lp-FUx.placeholder" = "Ex 500";
+
+/* Class = "UILabel"; text = "Total"; ObjectID = "XSJ-cD-nsY"; */
+"XSJ-cD-nsY.text" = "Total";
+
+/* Class = "UILabel"; text = "loadfit@cleral.com"; ObjectID = "aOa-zS-zbb"; */
+"aOa-zS-zbb.text" = "loadfit@cleral.com";
+
+/* Class = "UIButton"; normalTitle = "DEVICE LIST"; ObjectID = "aaC-TZ-W9B"; */
+"aaC-TZ-W9B.normalTitle" = "DEVICE LIST";
+
+/* Class = "UILabel"; text = "Ex 500"; ObjectID = "bqA-DG-zDJ"; */
+"bqA-DG-zDJ.text" = "Ex 500";
+
+/* Class = "UIButton"; normalTitle = "HISTORY"; ObjectID = "c0e-7O-cjA"; */
+"c0e-7O-cjA.normalTitle" = "HISTORY";
+
+/* Class = "UIButton"; normalTitle = "WEIGHTS"; ObjectID = "egc-8L-7PV"; */
+"egc-8L-7PV.normalTitle" = "WEIGHTS";
+
+/* Class = "UILabel"; text = "Weights"; ObjectID = "em8-3c-hz6"; */
+"em8-3c-hz6.text" = "Weights";
+
+/* Class = "UIButton"; normalTitle = "Eng"; ObjectID = "hoz-py-6rL"; */
+"hoz-py-6rL.normalTitle" = "Eng";
+
+/* Class = "UIButton"; normalTitle = "A"; ObjectID = "jV1-tS-d0a"; */
+"jV1-tS-d0a.normalTitle" = "A";
+
+/* Class = "UILabel"; text = "24/08/2021 2:05:59 AM"; ObjectID = "kNZ-bW-kya"; */
+"kNZ-bW-kya.text" = "24/08/2021 2:05:59 AM";
+
+/* Class = "UILabel"; text = "E-mail"; ObjectID = "s2y-wF-sQc"; */
+"s2y-wF-sQc.text" = "E-mail";
+
+/* Class = "UILabel"; text = "Gross"; ObjectID = "s5X-dm-HSN"; */
+"s5X-dm-HSN.text" = "Gross";
+
+/* Class = "UILabel"; text = "Limits"; ObjectID = "s84-fK-NQ9"; */
+"s84-fK-NQ9.text" = "Limits";
+
+/* Class = "UIButton"; normalTitle = "SETTING"; ObjectID = "tVc-2T-CRC"; */
+"tVc-2T-CRC.normalTitle" = "SETTING";
+
+/* Class = "UILabel"; text = "Cleral Loadfit 1.0.0"; ObjectID = "vBu-bq-6h1"; */
+"vBu-bq-6h1.text" = "Cleral Loadfit 1.0.0";
+
+/* Class = "UITextField"; placeholder = "Ex 500"; ObjectID = "wuc-lG-oiU"; */
+"wuc-lG-oiU.placeholder" = "Ex 500";
+
+/* Class = "UILabel"; text = "No device found, plese scan again!"; ObjectID = "zf2-tD-btM"; */
+"zf2-tD-btM.text" = "No device found, plese scan again!";

@@ -1,0 +1,14 @@
+platform :ios, '11.0'
+use_frameworks!
+
+target 'PASCAL' do
+
+  pod 'R.swift'
+  pod 'IQKeyboardManagerSwift'
+  pod 'ReachabilitySwift'
+  pod 'SideMenu'
+  pod 'DropDown'
+  pod 'RSSelectionMenu'
+  pod 'MaterialProgressBar'
+  
+end

@@ -1,0 +1,54 @@
+/* 
+  Localizable.strings
+  PASCAL
+
+  Created by Vaibhav on 11/01/22.
+  
+*/
+// MARK: - Device list
+"DEVICE LIST" = "LISTE DES PÉRIPHÉRIQUES";
+"No device found, plese scan again!" = "Aucun appareil trouvé, recherchez à nouveau !";
+"Scan" = "Rechercher";
+"Share Logs" = "Partager les journaux";
+"Share History" = "Partager l'historique";
+"Delete History" = "Effacer l'historique";
+"Deleted history successfully!" = "Effacé !";
+"Stop" = "Arrêt";
+
+
+// MARK: - Weight Screen
+"Weight alarm enabled!" = "Activé !";
+"Weight alarm disabled!" = "Désactivé !";
+"Unit type saved!" = "Enregistré !";
+"Language saved!" = "Enregistré !";
+"Record saved successfully!" = "Enregistré !";
+"Channel A Limit Saved." = "Enregistré !";
+"Channel B Limit Saved." = "Enregistré !";
+"Save" = "Sauvegarde";
+"Channel" = "Canal";
+"Limits" = "Limites";
+"Total" = "Total";
+"Gross" = "Brut";
+"Net" = "Net";
+
+// MARK: - Side menu
+"Scale connection" = "Connexion";
+"Weights" = "Poids";
+"History" = "Historique";
+"Settings" = "Réglages";
+"Help" = "Aide";
+
+
+// MARK: - Setting Screen
+"Unit Type" = "Type d'unité";
+"Alarm Sound" = "Alarme sonore";
+"Language" = "Langue";
+"KG" = "Métrique";
+"LBS" = "Impériale";
+
+
+// MARK: - History Screen
+"Ops! No weight data found!" = "Aucune donnée sauvegardée !";
+
+
+"Device" = "Appareil";
