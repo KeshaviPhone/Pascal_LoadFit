@@ -53,7 +53,7 @@ class SettingVC: UIViewController, UINavigationControllerDelegate {
     }
     func setupView() {
         var unitType = UserDefaults.getString(forKey: Constant.UserDefaultsKey.unitType) ?? ""
-        if unitType == "LBS"{
+        if unitType == "LBS".localizableString(){
             unitType = "LBS".localizableString()
             selectedUnitType = ["LBS"]
         }

@@ -57,6 +57,8 @@
 		1FE1BDC8276D9D2600A8D433 /* GloabalAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE1BDC4276D9D2500A8D433 /* GloabalAPI.swift */; };
 		1FE1BDC9276D9D2600A8D433 /* PASCALAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE1BDC5276D9D2500A8D433 /* PASCALAPI.swift */; };
 		1FE1BDCA276D9D2600A8D433 /* DatabaseUpdateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE1BDC6276D9D2600A8D433 /* DatabaseUpdateService.swift */; };
+		6B08AC36285C985700F5CEA6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6B08AC35285C985700F5CEA6 /* GoogleService-Info.plist */; };
+		6B950782285DC8C200FE77D3 /* AlarmPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B950781285DC8C200FE77D3 /* AlarmPlayer.swift */; };
 		740A5CC5E4250C4292FAAB8D /* Pods_PASCAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48ACE4F1DC0C1AE184201E08 /* Pods_PASCAL.framework */; };
 		84AC38E8278D4909008CC829 /* CoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 84AC38E6278D4909008CC829 /* CoreData.xcdatamodeld */; };
 		84AC38EF278DA154008CC829 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 84AC38F1278DA154008CC829 /* Localizable.strings */; };
@@ -125,6 +127,8 @@
 		29F7022BB53F87BC545D20C2 /* Pods-PASCAL.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PASCAL.release.xcconfig"; path = "Target Support Files/Pods-PASCAL/Pods-PASCAL.release.xcconfig"; sourceTree = "<group>"; };
 		48ACE4F1DC0C1AE184201E08 /* Pods_PASCAL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PASCAL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FD89F555E9CF4A9813E64AF /* Pods-PASCAL.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PASCAL.debug.xcconfig"; path = "Target Support Files/Pods-PASCAL/Pods-PASCAL.debug.xcconfig"; sourceTree = "<group>"; };
+		6B08AC35285C985700F5CEA6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		6B950781285DC8C200FE77D3 /* AlarmPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmPlayer.swift; sourceTree = "<group>"; };
 		84AC38E7278D4909008CC829 /* CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreData.xcdatamodel; sourceTree = "<group>"; };
 		84AC38EB278DA084008CC829 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		84AC38EC278DA084008CC829 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
@@ -272,6 +276,7 @@
 		1FC3A3452768AA4700EA4092 = {
 			isa = PBXGroup;
 			children = (
+				6B08AC35285C985700F5CEA6 /* GoogleService-Info.plist */,
 				1FCB6685279EE4CA00358CE9 /* R.generated.swift */,
 				84AC38F3278DA18A008CC829 /* Localization */,
 				1F037D84276A131100D8F0FC /* fonts */,
@@ -320,6 +325,7 @@
 				1FC3A3852768AC5100EA4092 /* Extension.swift */,
 				1FC3A3862768AC5100EA4092 /* SubClass.swift */,
 				88B5BD2A2770860F00AC0642 /* Utils.swift */,
+				6B950781285DC8C200FE77D3 /* AlarmPlayer.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -563,6 +569,7 @@
 				1FC3A34B2768AA4700EA4092 /* Frameworks */,
 				1FC3A34C2768AA4700EA4092 /* Resources */,
 				2880821883852D518D689CBA /* [CP] Embed Pods Frameworks */,
+				6B08AC37285C995300F5CEA6 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -612,6 +619,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				84B2C4B7278ED64D00C78F72 /* Main.storyboard in Resources */,
+				6B08AC36285C985700F5CEA6 /* GoogleService-Info.plist in Resources */,
 				1FD7CEFB276A1C4D00C7726D /* SQR721E.TTF in Resources */,
 				88B5BD40277090DF00AC0642 /* AnchhorEasy_FCM.wav in Resources */,
 				1FC3A35E2768AA5200EA4092 /* LaunchScreen.storyboard in Resources */,
@@ -682,6 +690,25 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PASCAL/Pods-PASCAL-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		6B08AC37285C995300F5CEA6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -699,6 +726,7 @@
 				1FC3A3522768AA4700EA4092 /* AppDelegate.swift in Sources */,
 				1FE1BDCA276D9D2600A8D433 /* DatabaseUpdateService.swift in Sources */,
 				1FC3A3802768AC4100EA4092 /* UIViewControllerPresentation.swift in Sources */,
+				6B950782285DC8C200FE77D3 /* AlarmPlayer.swift in Sources */,
 				1FE1BDC0276D9D1800A8D433 /* Response.swift in Sources */,
 				1F037CE92769BEA600D8F0FC /* SideMenuModule.swift in Sources */,
 				1FC3A3832768AC4900EA4092 /* UIViewController+Wrapped.swift in Sources */,
@@ -904,6 +932,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1.0.0;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = F6TZ7PTYR4;
 				INFOPLIST_FILE = PASCAL/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -911,7 +940,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cleralinc.loadfit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "PASCAL/SupportingFile/PASCAL-Bridging-Header.h";
@@ -935,7 +964,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cleralinc.loadfit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "PASCAL/SupportingFile/PASCAL-Bridging-Header.h";

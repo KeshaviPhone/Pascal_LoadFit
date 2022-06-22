@@ -8,7 +8,7 @@
 import UIKit
 import IQKeyboardManagerSwift
 import CoreData
-
+import FirebaseCore
 
 var logFileEvents = String()
 var cntLogWrite = 0
@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.createLogFile()
         // Override point for customization after application launch.
         IQKeyboardManager.shared.enable = true
-        
+        FirebaseApp.configure()
         let navigation = UINavigationController(rootViewController: DeviceListModule().viewController())
         navigation.isNavigationBarHidden = true
         window?.rootViewController = navigation

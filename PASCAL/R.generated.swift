@@ -244,10 +244,12 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.file` struct is generated, and contains static references to 3 files.
+  /// This `R.file` struct is generated, and contains static references to 4 files.
   struct file {
     /// Resource file `AnchhorEasy_FCM.wav`.
     static let anchhorEasy_FCMWav = Rswift.FileResource(bundle: R.hostingBundle, name: "AnchhorEasy_FCM", pathExtension: "wav")
+    /// Resource file `GoogleService-Info.plist`.
+    static let googleServiceInfoPlist = Rswift.FileResource(bundle: R.hostingBundle, name: "GoogleService-Info", pathExtension: "plist")
     /// Resource file `OSWALD-REGULAR.TTF`.
     static let oswaldregularttF = Rswift.FileResource(bundle: R.hostingBundle, name: "OSWALD-REGULAR", pathExtension: "TTF")
     /// Resource file `SQR721E.TTF`.
@@ -256,6 +258,12 @@ struct R: Rswift.Validatable {
     /// `bundle.url(forResource: "AnchhorEasy_FCM", withExtension: "wav")`
     static func anchhorEasy_FCMWav(_: Void = ()) -> Foundation.URL? {
       let fileResource = R.file.anchhorEasy_FCMWav
+      return fileResource.bundle.url(forResource: fileResource)
+    }
+
+    /// `bundle.url(forResource: "GoogleService-Info", withExtension: "plist")`
+    static func googleServiceInfoPlist(_: Void = ()) -> Foundation.URL? {
+      let fileResource = R.file.googleServiceInfoPlist
       return fileResource.bundle.url(forResource: fileResource)
     }
 

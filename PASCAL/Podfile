@@ -10,5 +10,6 @@ target 'PASCAL' do
   pod 'DropDown'
   pod 'RSSelectionMenu'
   pod 'MaterialProgressBar'
+  pod 'Firebase/Crashlytics'
   
 end

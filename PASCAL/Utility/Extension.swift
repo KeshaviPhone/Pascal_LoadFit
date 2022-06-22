@@ -12,33 +12,33 @@ import AVFoundation
 import Photos
 
 extension UITextField {
-
+    
     func applyCustomEffect() {
         self.borderStyle = .none
-
+        
         //To apply corner radius
         self.layer.cornerRadius = self.frame.size.height / 2
-
+        
         //To apply border
-
-
+        
+        
         //To apply Shadow
         self.layer.shadowOpacity = 1
         self.layer.shadowRadius = 5
         self.layer.shadowOffset = CGSize.init(width: 0, height: 2) // Use any CGSize
         self.layer.shadowColor =
-            UIColor.lightGray.cgColor
+        UIColor.lightGray.cgColor
     }
 }
 extension UIImage {
     func fixOrientation() -> UIImage {
-
+        
         if imageOrientation == UIImage.Orientation.up {
             return self
         }
-
+        
         var transform: CGAffineTransform = CGAffineTransform.identity
-
+        
         switch imageOrientation {
         case UIImage.Orientation.down, UIImage.Orientation.downMirrored:
             transform = transform.translatedBy(x: size.width, y: size.height)
@@ -70,11 +70,11 @@ extension UIImage {
         @unknown default:
             fatalError()
         }
-
+        
         let ctx: CGContext = CGContext(data: nil, width: Int(size.width), height: Int(size.height), bitsPerComponent: self.cgImage!.bitsPerComponent, bytesPerRow: 0, space: self.cgImage!.colorSpace!, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
-
+        
         ctx.concatenate(transform)
-
+        
         switch imageOrientation {
         case UIImage.Orientation.left, UIImage.Orientation.leftMirrored, UIImage.Orientation.right, UIImage.Orientation.rightMirrored:
             ctx.draw(self.cgImage!, in: CGRect(origin: CGPoint.zero, size: size))
@@ -82,12 +82,12 @@ extension UIImage {
             ctx.draw(self.cgImage!, in: CGRect(origin: CGPoint.zero, size: size))
             break
         }
-
+        
         let cgImage: CGImage = ctx.makeImage()!
-
+        
         return UIImage(cgImage: cgImage)
     }
-
+    
 }
 
 
@@ -100,7 +100,7 @@ extension UIImage {
         case high    = 0.75
         case highest = 1
     }
-
+    
     /// Returns the data for the specified image in JPEG format.
     /// If the image object’s underlying image data has been purged, calling this function forces that data to be reloaded into memory.
     /// - returns: A data object containing the JPEG data, or nil if there was a problem generating the data. This function may return nil if the image has no data or if the underlying CGImageRef contains data in an unsupported bitmap format.
@@ -109,35 +109,35 @@ extension UIImage {
     }
 }
 extension UITextField {
-
-  func addInputViewDatePicker(target: Any, selector: Selector) {
-
-   let screenWidth = UIScreen.main.bounds.width
-
-   //Add DatePicker as inputView
-   let datePicker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 216))
-   datePicker.datePickerMode = .date
-   self.inputView = datePicker
-
-   //Add Tool Bar as input AccessoryView
-   let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 44))
-   let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-   let cancelBarButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelPressed))
-   let doneBarButton = UIBarButtonItem(title: "Done", style: .plain, target: target, action: selector)
-   toolBar.setItems([cancelBarButton, flexibleSpace, doneBarButton], animated: false)
-
-   self.inputAccessoryView = toolBar
-}
-
-  @objc func cancelPressed() {
-    self.resignFirstResponder()
-  }
+    
+    func addInputViewDatePicker(target: Any, selector: Selector) {
+        
+        let screenWidth = UIScreen.main.bounds.width
+        
+        //Add DatePicker as inputView
+        let datePicker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 216))
+        datePicker.datePickerMode = .date
+        self.inputView = datePicker
+        
+        //Add Tool Bar as input AccessoryView
+        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 44))
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let cancelBarButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelPressed))
+        let doneBarButton = UIBarButtonItem(title: "Done", style: .plain, target: target, action: selector)
+        toolBar.setItems([cancelBarButton, flexibleSpace, doneBarButton], animated: false)
+        
+        self.inputAccessoryView = toolBar
+    }
+    
+    @objc func cancelPressed() {
+        self.resignFirstResponder()
+    }
 }
 
 class GlobalObjects: NSObject {
-
+    
     static let shared = GlobalObjects()
-
+    
     var favProfileHomeVcHeight = CGFloat()
     var favProfileExperience = CGFloat()
     var favProfilePrice = CGFloat()
@@ -151,11 +151,11 @@ class GlobalObjects: NSObject {
     }()
 }
 extension UIColor {
-
+    
     convenience init(rgb: UInt) {
         self.init(rgb: rgb, alpha: 1.0)
     }
-
+    
     convenience init(rgb: UInt, alpha: CGFloat) {
         self.init(
             red: CGFloat((rgb & 0xFF0000) >> 16) / 255.0,
@@ -174,35 +174,35 @@ extension UIButton{
 }
 
 extension UIViewController{
-
+    
     func toBack (){
         self.navigationController?.popViewController(animated: true)
     }
-
+    
     func toDissmiss (){
         self.dismiss(animated: true, completion: nil)
-
+        
     }
-
-   /* func showToast(message : String) {
-        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - 125 , y: self.view.frame.size.height - 150, width: 250, height: 40))
-        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
-        toastLabel.textColor = UIColor.white
-        toastLabel.numberOfLines = 0
-        toastLabel.textAlignment = .center;
-        toastLabel.font = UIFont(name: "Montserrat-Light", size: 12.0)
-        toastLabel.text = message
-        toastLabel.alpha = 1.0
-        toastLabel.layer.cornerRadius = 20;
-        toastLabel.clipsToBounds  =  true
-        self.view.addSubview(toastLabel)
-        UIView.animate(withDuration: 4.0, delay: 0.1, options: .curveEaseOut, animations: {
-            toastLabel.alpha = 0.0
-        }, completion: {(isCompleted) in
-            toastLabel.removeFromSuperview()
-        })
-    }*/
-
+    
+    /* func showToast(message : String) {
+     let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - 125 , y: self.view.frame.size.height - 150, width: 250, height: 40))
+     toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+     toastLabel.textColor = UIColor.white
+     toastLabel.numberOfLines = 0
+     toastLabel.textAlignment = .center;
+     toastLabel.font = UIFont(name: "Montserrat-Light", size: 12.0)
+     toastLabel.text = message
+     toastLabel.alpha = 1.0
+     toastLabel.layer.cornerRadius = 20;
+     toastLabel.clipsToBounds  =  true
+     self.view.addSubview(toastLabel)
+     UIView.animate(withDuration: 4.0, delay: 0.1, options: .curveEaseOut, animations: {
+     toastLabel.alpha = 0.0
+     }, completion: {(isCompleted) in
+     toastLabel.removeFromSuperview()
+     })
+     }*/
+    
     func showAlertAndGoBack(message : String) {
         let alert = UIAlertController(title: "", message: message, preferredStyle: UIAlertController.Style.alert)
         let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
@@ -212,20 +212,20 @@ extension UIViewController{
         alert.addAction(okAction)
         self.present(alert, animated: true, completion: nil)
     }
-
+    
     func showAlertmessage(message : String) {
         let alert = UIAlertController(title: "", message: message, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
-
+    
     public func openAlert(title: String,
                           message: String,
                           alertStyle:UIAlertController.Style,
                           actionTitles:[String],
                           actionStyles:[UIAlertAction.Style],
                           actions: [((UIAlertAction) -> Void)]){
-
+        
         let alertController = UIAlertController(title: title, message: message, preferredStyle: alertStyle)
         for(index, indexTitle) in actionTitles.enumerated(){
             let action = UIAlertAction(title: indexTitle, style: actionStyles[index], handler: actions[index])
@@ -233,11 +233,11 @@ extension UIViewController{
         }
         self.present(alertController, animated: true)
     }
-
+    
     func formattedNumber(number: String) -> String {
         let cleanPhoneNumber = number.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
         let mask = "XX XXX XX XX"
-
+        
         var result = ""
         var index = cleanPhoneNumber.startIndex
         for ch in mask where index < cleanPhoneNumber.endIndex {
@@ -260,7 +260,7 @@ extension UIViewController{
         alert.addAction(okAction)
         self.present(alert, animated: true, completion: nil)
     }
-
+    
     open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
@@ -268,13 +268,13 @@ extension UIViewController{
         let emailRegExp = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}"
         let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegExp)
         return emailTest.evaluate(with: email)
-
+        
     }
     func validatePassword(password: String) -> Bool {
         if password.count >= 6 && password.count <= 18{
             return true
         }else{
-
+            
             return false
         }
     }
@@ -285,15 +285,15 @@ extension UIViewController{
             return false
         }
     }
-
+    
     func validateMobileNo(mobileno: String) -> Bool {
         if mobileno.count == 10{
-//            let regularExpressionForPhone = "^[6-9]\\d{9}$"
-//            let testPhone = NSPredicate(format:"SELF MATCHES %@", regularExpressionForPhone)
-//            return testPhone.evaluate(with: mobileno)
+            //            let regularExpressionForPhone = "^[6-9]\\d{9}$"
+            //            let testPhone = NSPredicate(format:"SELF MATCHES %@", regularExpressionForPhone)
+            //            return testPhone.evaluate(with: mobileno)
             return true
         }else{
-
+            
             return false
         }
     }
@@ -311,7 +311,7 @@ extension UIViewController{
             return false
         }
     }
-
+    
     func getRechabilityStatus() -> Bool{
         do {
             let reachability = try Reachability()
@@ -327,14 +327,33 @@ extension UIViewController{
     }
 }
 
-extension String{
+extension String {
     
-    func ToFile(fileName: String) {        
+    func toFloat() -> Float {
+        let intValue = Float(self)
+        return intValue ?? 0.0
+    }
+    
+    func toInt() -> Int {
+        let intValue = Int(self)
+        return intValue ?? 0
+    }
+    
+    func isBlankOrEmpty() -> Bool {
+        // Check empty string
+        if self.isEmpty {
+            return true
+        }
+        // Trim and check empty string
+        return (self.trimmingCharacters(in: .whitespaces) == "")
+    }
+    
+    func ToFile(fileName: String) {
         cntLogWrite += 1
         guard let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
             return
         }
-
+        
         let fileUrl = dir.appendingPathComponent(fileName)
         guard let data = self.data(using: .utf8) else {
             return
@@ -347,7 +366,7 @@ extension String{
             }
             return
         }
-
+        
         if let fileHandle = try? FileHandle(forUpdating: fileUrl) {
             if !data.isEmpty {
                 fileHandle.seekToEndOfFile()
@@ -357,10 +376,10 @@ extension String{
                     print(error)
                 }
                 
-//                if cntLogWrite == 500 {
-//                    cntLogWrite = 0
-//                    fileHandle.closeFile()
-//                }
+                //                if cntLogWrite == 500 {
+                //                    cntLogWrite = 0
+                //                    fileHandle.closeFile()
+                //                }
             }
         }
     }
@@ -373,13 +392,13 @@ extension String{
         fullString.addAttributes(boldFontAttribute, range: range)
         return fullString
     }
-
+    
     func localizableString(loc: String) -> String{
         let path = Bundle.main.path(forResource: loc, ofType: "lproj")
         let bundle = Bundle(path: path!)
         return NSLocalizedString(self, tableName: nil, bundle: bundle!, value: "", comment: "")
     }
-
+    
     var html2AttributedString: NSAttributedString? {
         do {
             return try NSAttributedString(data: Data(utf8),
@@ -391,6 +410,7 @@ extension String{
             return nil
         }
     }
+    
     var html2String: String {
         return html2AttributedString?.string ?? ""
     }
@@ -413,31 +433,46 @@ extension String{
             return [String]()
         }
     }
-
+    
+    func localizableString() -> String
+    {
+        var language = UserDefaults.getString(forKey: Constant.UserDefaultsKey.language)
+        if language == "Français"{
+            language = "fr"
+        }
+        else{
+            language = "en"
+        }
+        let path = Bundle.main.path(forResource: language, ofType: "lproj")
+        let bundle = Bundle(path: path!)
+        return NSLocalizedString(self, tableName: nil, bundle: bundle!, value: "", comment: "")
+    }
+    
+    func convertValues(convert: Bool, kg: Bool, settingKg: Bool, round: Bool = true) -> String {
+        
+        var value = "0F"
+       
+        if (!convert) {
+            value = self
+        } else if (kg && settingKg) {
+            value = self
+        } else if (kg && !settingKg) {
+            value = String(format: "%.2f", Float(self)! * 2.20462262)
+        } else if (!kg && settingKg) {
+            value = String(format: "%.2f", Float(self)! / 2.20462262)
+        } else {
+            value = self
+        }
+        
+        if(round) {
+            //Rounding UP values
+            let roundedValue = Double(value)!.rounded()
+            return "\(roundedValue)"
+        } else {
+            return value
+        }
+    }
 }
-extension String {
-    func toFloat() -> Float {
-           let intValue = Float(self)
-        return intValue ?? 0.0
-       }
-    func toInt() -> Int {
-           let intValue = Int(self)
-        return intValue ?? 0
-       }
-
-}
-
-extension String {
-    func isBlankOrEmpty() -> Bool {
-      // Check empty string
-      if self.isEmpty {
-          return true
-      }
-      // Trim and check empty string
-      return (self.trimmingCharacters(in: .whitespaces) == "")
-   }
-}
-
 
 extension UILabel {
     func setSizeFont (sizeFont: CGFloat) {
@@ -446,7 +481,7 @@ extension UILabel {
     }
 }
 public extension UIDevice {
-
+    
     static let modelName: String = {
         var systemInfo = utsname()
         uname(&systemInfo)
@@ -455,9 +490,9 @@ public extension UIDevice {
             guard let value = element.value as? Int8, value != 0 else { return identifier }
             return identifier + String(UnicodeScalar(UInt8(value)))
         }
-
+        
         func mapToDevice(identifier: String) -> String { // swiftlint:disable:this cyclomatic_complexity
-            #if os(iOS)
+#if os(iOS)
             switch identifier {
             case "iPod5,1":                                       return "iPod touch (5th generation)"
             case "iPod7,1":                                       return "iPod touch (6th generation)"
@@ -527,35 +562,21 @@ public extension UIDevice {
             case "i386", "x86_64", "arm64":                                return "Simulator \(mapToDevice(identifier: ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "iOS"))"
             default:                                              return identifier
             }
-            #elseif os(tvOS)
+#elseif os(tvOS)
             switch identifier {
             case "AppleTV5,3": return "Apple TV 4"
             case "AppleTV6,2": return "Apple TV 4K"
             case "i386", "x86_64": return "Simulator \(mapToDevice(identifier: ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "tvOS"))"
             default: return identifier
             }
-            #endif
+#endif
         }
-
+        
         return mapToDevice(identifier: identifier)
     }()
+    
+}
 
-}
-extension String{
-    func localizableString() -> String
-    {
-        var language = UserDefaults.getString(forKey: Constant.UserDefaultsKey.language)
-        if language == "Français"{
-            language = "fr"
-        }
-        else{
-            language = "en"
-        }
-        let path = Bundle.main.path(forResource: language, ofType: "lproj")
-        let bundle = Bundle(path: path!)
-        return NSLocalizedString(self, tableName: nil, bundle: bundle!, value: "", comment: "")
-    }
-}
 extension UIViewController {
     func getCurrentDateAndTime() -> String {
         let now = Date()

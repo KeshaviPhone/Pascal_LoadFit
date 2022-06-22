@@ -28,8 +28,8 @@ class DeviceVC: UIViewController, UINavigationControllerDelegate {
     
     //MARK: - GLOBAL VARIABLES
     var presenter:DevicePresenter!
-    var playerA: AVAudioPlayer!
-    var playerB: AVAudioPlayer!
+//    var playerA: AVAudioPlayer!
+//    var playerB: AVAudioPlayer!
     @IBOutlet weak var btnActionType: UIButton!
     @IBOutlet weak var tblDevice: UITableView!
     @IBOutlet weak var lblWeightTotal: UILabel!
@@ -59,6 +59,8 @@ class DeviceVC: UIViewController, UINavigationControllerDelegate {
     var RandomDic = [[String: String]]()
     var buffer = Data()
     
+    var currentTextField: UITextField?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         btnMenu.setTitle("Weights".localizableString().uppercased(), for: .normal)
@@ -80,7 +82,7 @@ class DeviceVC: UIViewController, UINavigationControllerDelegate {
     }
     
     // TODO: For testing purpose
-    var frame = ";11-11-20;06:13:37;UNIT;kg;GWA;7858;GWB;7848;NTA;4538;NTB;2432;GWT;15706;NTT;6980;CKS;48;;TIME;11-11-20;06:13:37;UNIT;kg;GWA;7858;GWB;7848;NTA;4538;NTB;2432;GWT;1547;NTT;6980;CKS;48;"
+    var frame = "" //";11-11-20;06:13:37;UNIT;kg;GWA;7858;GWB;7848;NTA;4538;NTB;2432;GWT;15706;NTT;6980;CKS;48;;TIME;11-11-20;06:13:37;UNIT;kg;GWA;7858;GWB;7848;NTA;4538;NTB;2432;GWT;1547;NTT;6980;CKS;48;"
     
     // TODO: For testing purpose
     @objc func timerAction() {
@@ -94,6 +96,8 @@ class DeviceVC: UIViewController, UINavigationControllerDelegate {
         let NTT = NTA + NTB
         
         frame += ";TIME;11-11-20;06:13:37;UNIT;kg;GWA;\(GWA);GWB;\(GWB);NTA;\(NTA);NTB;\(NTB);GWT;\(GWT);NTT;\(NTT);CKS;48;"
+        //";TIME;11-11-20;06:13:37;UNIT;pound;GWA;5000;GWB;7000;NTA;6000;NTB;9000;GWT;12000;NTT;15000;CKS;48;"
+        //";TIME;11-11-20;06:13:37;UNIT;kg;GWA;\(GWA);GWB;\(GWB);NTA;\(NTA);NTB;\(NTB);GWT;\(GWT);NTT;\(NTT);CKS;48;"
 
         let stringArray = frame.match()
         
@@ -116,9 +120,13 @@ class DeviceVC: UIViewController, UINavigationControllerDelegate {
                 i = i + 1
             }
             ReciveDic = dic
-            tblDevice.reloadData()
             frame = frame.replacingOccurrences(of: str, with: "")
-            tblDevice.reloadData()
+            
+            if currentTextField == nil {
+                tblDevice.reloadData()
+            }
+            
+            playLimitsSound()
         }
     }
     
@@ -137,7 +145,9 @@ class DeviceVC: UIViewController, UINavigationControllerDelegate {
     func CallFire(value : [String : String])
     {
         ReciveDic = value
-        tblDevice.reloadData()
+        if currentTextField == nil {
+            tblDevice.reloadData()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -161,7 +171,7 @@ class DeviceVC: UIViewController, UINavigationControllerDelegate {
 
     func setupView()
     {
-        if UserDefaults.getString(forKey: Constant.UserDefaultsKey.unitType) == "LBS"
+        if UserDefaults.getString(forKey: Constant.UserDefaultsKey.unitType) == "LBS".localizableString()
         {
             if UserDefaults.getString(forKey: Constant.UserDefaultsKey.weightsType) == "net" {
                 btnType = "net"
@@ -305,31 +315,102 @@ class DeviceVC: UIViewController, UINavigationControllerDelegate {
     // MARK: - Sound Play/Puase
     func playASound(){
         if UserDefaults.getString(forKey: Constant.UserDefaultsKey.alarmSound) != "off"{
-            let url = Bundle.main.url(forResource: "AnchhorEasy_FCM", withExtension: "wav")
-            playerA = try! AVAudioPlayer(contentsOf: url!)
-            playerA.play()
+//            let url = Bundle.main.url(forResource: "AnchhorEasy_FCM", withExtension: "wav")
+//            playerA = try! AVAudioPlayer(contentsOf: url!)
+//            playerA.play()
+//            DispatchQueue.main.async {
+//                AlarmPlayer.shared.playAlertSound()
+//            }
         }
     }
     func pauseASound(){
         if UserDefaults.getString(forKey: Constant.UserDefaultsKey.alarmSound) != "off"{
-            if playerA != nil {
-                playerA.stop()
-                playerA = nil
-            }
+//            if playerA != nil {
+//                if playerA.isPlaying {
+//                    playerA.stop()
+//                    playerA = nil
+//                }
+//            }
+//            DispatchQueue.main.async {
+//                AlarmPlayer.shared.stopAlertSound()
+//            }
         }
     }
     func playBSound(){
         if UserDefaults.getString(forKey: Constant.UserDefaultsKey.alarmSound) != "off"{
-            let url = Bundle.main.url(forResource: "AnchhorEasy_FCM", withExtension: "wav")
-            playerB = try! AVAudioPlayer(contentsOf: url!)
-            playerB.play()
+//            let url = Bundle.main.url(forResource: "AnchhorEasy_FCM", withExtension: "wav")
+//            playerB = try! AVAudioPlayer(contentsOf: url!)
+//            playerB.play()
+//            AlarmPlayer.shared.playAlertSound()
         }
     }
     func pauseBSound(){
         if UserDefaults.getString(forKey: Constant.UserDefaultsKey.alarmSound) != "off"{
-            if playerB != nil {
-                playerB.stop()
-                playerB = nil
+//            if playerB != nil {
+//                playerB.stop()
+//                playerB = nil
+//            }
+//            AlarmPlayer.shared.stopAlertSound()
+        }
+    }
+    
+    func playLimitsSound() {
+        
+        var isOverLimit = false
+        
+        if UserDefaults.getString(forKey: Constant.UserDefaultsKey.unitType) == "LBS".localizableString() {
+            if btnType == "gross" {
+                if "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LGLimitA))" != "0" {
+                    if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LGLimitA) <= Int(ReciveDic["GWA"]!)!{
+                        isOverLimit = true
+                    }
+                } else if "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LGLimitB))" != "0" {
+                    if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LGLimitB) <= Int(ReciveDic["GWB"]!)!{
+                        isOverLimit = true
+                    }
+                }
+            } else {
+                if "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LNLimitA))" != "0" {
+                    if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LNLimitA) <= Int(ReciveDic["NTA"]!)!{
+                        isOverLimit = true
+                    }
+                } else if "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LNLimitB))" != "0" {
+                    if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LNLimitB) <= Int(ReciveDic["NTB"]!)!{
+                        isOverLimit = true
+                    }
+                }
+            }
+        } else {
+            if btnType == "gross" {
+                if "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KGLimitA))" != "0" {
+                    if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KGLimitA) <= Int(ReciveDic["GWA"]!)!{
+                        isOverLimit = true
+                    }
+                } else if "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KGLimitB))" != "0" {
+                    if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KGLimitB) <= Int(ReciveDic["GWB"]!)!{
+                        isOverLimit = true
+                    }
+                }
+            } else {
+                if "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KNLimitA))" != "0" {
+                    if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KNLimitA) <= Int(ReciveDic["NTA"]!)!{
+                        isOverLimit = true
+                    }
+                } else if "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KNLimitB))" != "0" {
+                    if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KNLimitB) <= Int(ReciveDic["NTB"]!)!{
+                        isOverLimit = true
+                    }
+                }
+            }
+        }
+        
+        if isOverLimit {
+            DispatchQueue.main.async {
+                AlarmPlayer.shared.playAlertSound()
+            }
+        } else {
+            DispatchQueue.main.async {
+                AlarmPlayer.shared.stopAlertSound()
             }
         }
     }
@@ -342,25 +423,32 @@ extension DeviceVC:DeviceView {
 
 extension DeviceVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return channelArray.count
+        return ReciveDic.count > 0 ? channelArray.count : 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tblDevice.dequeueReusableCell(withIdentifier: "deviceCell", for: indexPath) as! deviceCell
         cell.btnChannel.SetRadius()
-        if UserDefaults.getString(forKey: Constant.UserDefaultsKey.unitType) == "LBS"
+        if UserDefaults.getString(forKey: Constant.UserDefaultsKey.unitType) == "LBS".localizableString()
         {
+            let unitType = ReciveDic["UNIT"]
+            var isConvert = false
+            
+            if unitType == "kg" {
+                isConvert = true
+            }
+            
             if btnType == "gross" {
                 if indexPath.row == 0{
                     cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LGLimitA))"
-                    cell.txtWeights.text = ReciveDic["GWA"] ?? ""
+                    cell.txtWeights.text = (ReciveDic["GWA"] ?? "").convertValues(convert: isConvert, kg: isConvert, settingKg: false)
                     if cell.txtLimit.text == "0"{
                         cell.txtLimit.text = ""
                         pauseASound()
                         cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
                     }
                     else{
-                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LGLimitA) >= Int(ReciveDic["GWA"]!)!{
+                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LGLimitA) >= Int(ReciveDic["GWA"]!.convertValues(convert: isConvert, kg: isConvert, settingKg: false))!{
                             // Pause
                             pauseASound()
                             cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
@@ -374,14 +462,14 @@ extension DeviceVC: UITableViewDelegate, UITableViewDataSource {
                 }
                 else{
                     cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LGLimitB))"
-                    cell.txtWeights.text = ReciveDic["GWB"] ?? ""
+                    cell.txtWeights.text = (ReciveDic["GWB"] ?? "").convertValues(convert: isConvert, kg: isConvert, settingKg: false)
                     if cell.txtLimit.text == "0"{
                         cell.txtLimit.text = ""
                         pauseBSound()
                         cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
                     }
                     else{
-                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LGLimitB) >= Int(ReciveDic["GWB"]!)!{
+                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LGLimitB) >= Int(ReciveDic["GWB"]!.convertValues(convert: isConvert, kg: isConvert, settingKg: false))!{
                             // Pause
                             pauseBSound()
                             cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
@@ -395,19 +483,19 @@ extension DeviceVC: UITableViewDelegate, UITableViewDataSource {
                 }
                 setupView()
                 lblWeightTotal.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-                lblWeightTotal.text = ReciveDic["GWT"] ?? ""
+                lblWeightTotal.text = (ReciveDic["GWT"] ?? "").convertValues(convert: isConvert, kg: isConvert, settingKg: false)
             }
             else{
                 if indexPath.row == 0{
                     cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LNLimitA))"
-                    cell.txtWeights.text = ReciveDic["NTA"] ?? ""
+                    cell.txtWeights.text = (ReciveDic["NTA"] ?? "").convertValues(convert: isConvert, kg: isConvert, settingKg: false)
                     if cell.txtLimit.text == "0"{
                         cell.txtLimit.text = ""
                         pauseASound()
                         cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
                     }
                     else{
-                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LNLimitA) >= Int(ReciveDic["NTA"]!)!{
+                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LNLimitA) >= Int(ReciveDic["NTA"]!.convertValues(convert: isConvert, kg: isConvert, settingKg: false))!{
                             // Pause
                             pauseASound()
                             cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
@@ -421,14 +509,14 @@ extension DeviceVC: UITableViewDelegate, UITableViewDataSource {
                 }
                 else{
                     cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LNLimitB))"
-                    cell.txtWeights.text = ReciveDic["NTB"] ?? ""
+                    cell.txtWeights.text = (ReciveDic["NTB"] ?? "").convertValues(convert: isConvert, kg: isConvert, settingKg: false)
                     if cell.txtLimit.text == "0"{
                         cell.txtLimit.text = ""
                         pauseBSound()
                         cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
                     }
                     else{
-                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LNLimitB) >= Int(ReciveDic["NTB"]!)!{
+                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LNLimitB) >= Int(ReciveDic["NTB"]!.convertValues(convert: isConvert, kg: isConvert, settingKg: false))!{
                             // Pause
                             pauseBSound()
                             cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
@@ -442,21 +530,28 @@ extension DeviceVC: UITableViewDelegate, UITableViewDataSource {
                 }
                 setupView()
                 lblWeightTotal.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-                lblWeightTotal.text = ReciveDic["NTT"] ?? ""
+                lblWeightTotal.text = (ReciveDic["NTT"] ?? "").convertValues(convert: isConvert, kg: isConvert, settingKg: false)
             }
-        }
-        else{
+        } else{
+            
+            let unitType = ReciveDic["UNIT"]
+            var isConvert = false
+            
+            if unitType != "kg" {
+                isConvert = true
+            }
+            
             if btnType == "gross" {
                 if indexPath.row == 0{
                     cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KGLimitA))"
-                    cell.txtWeights.text = ReciveDic["GWA"] ?? ""
+                    cell.txtWeights.text = (ReciveDic["GWA"] ?? "").convertValues(convert: isConvert, kg: !isConvert, settingKg: true)
                     if cell.txtLimit.text == "0"{
                         cell.txtLimit.text = ""
                         pauseASound()
                         cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
                     }
                     else{
-                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KGLimitA) >= Int(ReciveDic["GWA"]!)!{
+                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KGLimitA) >= Int(ReciveDic["GWA"]!.convertValues(convert: isConvert, kg: !isConvert, settingKg: true))!{
                             // Pause
                             pauseASound()
                             cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
@@ -470,14 +565,14 @@ extension DeviceVC: UITableViewDelegate, UITableViewDataSource {
                 }
                 else{
                     cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KGLimitB))"
-                    cell.txtWeights.text = ReciveDic["GWB"] ?? ""
+                    cell.txtWeights.text = (ReciveDic["GWB"] ?? "").convertValues(convert: isConvert, kg: !isConvert, settingKg: true)
                     if cell.txtLimit.text == "0"{
                         cell.txtLimit.text = ""
                         pauseBSound()
                         cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
                     }
                     else{
-                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KGLimitB) >= Int(ReciveDic["GWB"]!)!{
+                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KGLimitB) >= Int(ReciveDic["GWB"]!.convertValues(convert: isConvert, kg: !isConvert, settingKg: true))!{
                             // Pause
                             pauseBSound()
                             cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
@@ -491,19 +586,19 @@ extension DeviceVC: UITableViewDelegate, UITableViewDataSource {
                 }
                 setupView()
                 lblWeightTotal.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-                lblWeightTotal.text = ReciveDic["GWT"] ?? ""
+                lblWeightTotal.text = (ReciveDic["GWT"] ?? "").convertValues(convert: isConvert, kg: !isConvert, settingKg: true)
             }
             else{
                 if indexPath.row == 0{
                     cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KNLimitA))"
-                    cell.txtWeights.text = ReciveDic["NTA"] ?? ""
+                    cell.txtWeights.text = (ReciveDic["NTA"] ?? "").convertValues(convert: isConvert, kg: !isConvert, settingKg: true)
                     if cell.txtLimit.text == "0"{
                         cell.txtLimit.text = ""
                         pauseASound()
                         cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
                     }
                     else{
-                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KNLimitA) >= Int(ReciveDic["NTA"]!)!{
+                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KNLimitA) >= Int(ReciveDic["NTA"]!.convertValues(convert: isConvert, kg: !isConvert, settingKg: true))!{
                             // Pause
                             pauseASound()
                             cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
@@ -517,14 +612,14 @@ extension DeviceVC: UITableViewDelegate, UITableViewDataSource {
                 }
                 else{
                     cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KNLimitB))"
-                    cell.txtWeights.text = ReciveDic["NTB"] ?? ""
+                    cell.txtWeights.text = (ReciveDic["NTB"] ?? "").convertValues(convert: isConvert, kg: !isConvert, settingKg: true)
                     if cell.txtLimit.text == "0"{
                         cell.txtLimit.text = ""
                         pauseBSound()
                         cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
                     }
                     else{
-                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KNLimitB) >= Int(ReciveDic["NTB"]!)!{
+                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KNLimitB) >= Int(ReciveDic["NTB"]!.convertValues(convert: isConvert, kg: !isConvert, settingKg: true))!{
                             // Pause
                             pauseBSound()
                             cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
@@ -538,7 +633,7 @@ extension DeviceVC: UITableViewDelegate, UITableViewDataSource {
                 }
                 setupView()
                 lblWeightTotal.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-                lblWeightTotal.text = ReciveDic["NTT"] ?? ""
+                lblWeightTotal.text = (ReciveDic["NTT"] ?? "").convertValues(convert: isConvert, kg: !isConvert, settingKg: true)
             }
         }
         cell.txtLimit.tag = indexPath.row
@@ -554,6 +649,11 @@ extension DeviceVC: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension DeviceVC : UITextFieldDelegate {
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        currentTextField = textField
+    }
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
         var totals = 0
         var limits = 0
@@ -563,7 +663,7 @@ extension DeviceVC : UITextFieldDelegate {
             totals += cell?.txtWeights.text?.toInt() ?? 0
             limits += cell?.txtLimit.text?.toInt() ?? 0
         }
-        if UserDefaults.getString(forKey: Constant.UserDefaultsKey.unitType) == "LBS"{
+        if UserDefaults.getString(forKey: Constant.UserDefaultsKey.unitType) == "LBS".localizableString() {
             if btnType == "gross" {
                 if textField.tag == 0{
                     UserDefaults.saveString(textField.text, forKey: Constant.UserDefaultsKey.LGLimitA)
@@ -577,7 +677,8 @@ extension DeviceVC : UITextFieldDelegate {
             else{
                 if textField.tag == 0{
                     UserDefaults.saveString(textField.text, forKey: Constant.UserDefaultsKey.LNLimitA)
-                    self.view.makeToast("Channel A Limit Saved.".localizableString(), duration: 1.0, position: .bottom)                }
+                    self.view.makeToast("Channel A Limit Saved.".localizableString(), duration: 1.0, position: .bottom)
+                }
                 else{
                     UserDefaults.saveString(textField.text, forKey: Constant.UserDefaultsKey.LNLimitB)
                     self.view.makeToast("Channel B Limit Saved.".localizableString(), duration: 1.0, position: .bottom)
@@ -623,6 +724,7 @@ extension DeviceVC : UITextFieldDelegate {
         else{
             lblWeightTotal.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         }
+        currentTextField = nil
         tblDevice.reloadData()
     }
 }
@@ -727,7 +829,11 @@ extension DeviceVC: CBPeripheralDelegate, CBCentralManagerDelegate {
             
             print(dic)
             ReciveDic = dic
-            tblDevice.reloadData()
+            if currentTextField == nil {
+                tblDevice.reloadData()
+            }
+            
+            playLimitsSound()
             
             let remainingString = stringFromData.replacingOccurrences(of: frame, with: "")
             buffer = Data(remainingString.utf8)
@@ -764,12 +870,6 @@ extension DeviceVC: CBPeripheralDelegate, CBCentralManagerDelegate {
                 //peripheral.setNotifyValue(true, for: characteristic)
             }
         }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            //DispatchQueue.main.async {
-            print("*BOX/SSTATUS/GET/DATA# --> Command Sent")
-        }
-        
     }
 }
 
