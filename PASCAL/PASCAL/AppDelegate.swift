@@ -12,6 +12,7 @@ import FirebaseCore
 
 var logFileEvents = String()
 var cntLogWrite = 0
+var isFromLaunch:Bool = true
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {

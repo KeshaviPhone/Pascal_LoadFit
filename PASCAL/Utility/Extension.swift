@@ -457,20 +457,24 @@ extension String {
         } else if (kg && settingKg) {
             value = self
         } else if (kg && !settingKg) {
-            value = String(format: "%.2f", Float(self)! * 2.20462262)
+            value = String(format: "%.2f", self.doubleValue * 2.20462262)
         } else if (!kg && settingKg) {
-            value = String(format: "%.2f", Float(self)! / 2.20462262)
+            value = String(format: "%.2f", self.doubleValue / 2.20462262)
         } else {
             value = self
         }
         
         if(round) {
             //Rounding UP values
-            let roundedValue = Double(value)!.rounded()
+            let roundedValue = roundToTens(value.doubleValue)
             return "\(roundedValue)"
         } else {
             return value
         }
+    }
+    
+    func roundToTens(_ x : Double) -> Int {
+        return 10 * Int((x / 10.0).rounded())
     }
 }
 
@@ -591,5 +595,21 @@ extension UIViewController {
         formatter.dateFormat = "HH:mm:ss"
         let time = formatter.string(from: now)
         return time
+    }
+}
+
+extension String {
+    static let numberFormatter = NumberFormatter()
+    var doubleValue: Double {
+        String.numberFormatter.decimalSeparator = "."
+        if let result =  String.numberFormatter.number(from: self) {
+            return result.doubleValue
+        } else {
+            String.numberFormatter.decimalSeparator = ","
+            if let result = String.numberFormatter.number(from: self) {
+                return result.doubleValue
+            }
+        }
+        return 0
     }
 }

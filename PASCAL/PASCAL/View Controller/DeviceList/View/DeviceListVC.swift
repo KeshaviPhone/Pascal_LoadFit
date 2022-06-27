@@ -60,6 +60,10 @@ class DeviceListVC: UIViewController, UINavigationControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if discoveredPeripheral != nil && discoveredPeripheral!.state == .connected {
+            
+        }
+        
         manager = nil
         discoveredPeripheral = nil
         
@@ -253,7 +257,13 @@ extension DeviceListVC: CBPeripheralDelegate, CBCentralManagerDelegate {
         case .poweredOn:
             print("central.state is .poweredOn")
             log(text: "central.state is .poweredOn")
-            retrievePeripheral()
+            if isFromLaunch {
+                isFromLaunch = false
+                retrievePeripheral()
+            } else {
+                scanBLEDevice()
+            }
+            
         @unknown default:
             fatalError()
         }
