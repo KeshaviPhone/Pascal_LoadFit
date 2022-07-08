@@ -44,6 +44,8 @@ class DeviceVC: UIViewController, UINavigationControllerDelegate {
     @IBOutlet weak var lblNet: UILabel!
     @IBOutlet weak var btnSave: UIButton!
     @IBOutlet weak var btnPopup: UIButton!
+    @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
+    
     let OnDropDown = DropDown()
     lazy var dropDowns: [DropDown] = {
         return [
@@ -51,7 +53,7 @@ class DeviceVC: UIViewController, UINavigationControllerDelegate {
         ]
     }()
     
-    var channelArray = ["A","B"]
+    var channelArray = [String]()
     var totalWeight = 0
     var totalLimit = 0
     var btnType: String = "gross"
@@ -76,9 +78,20 @@ class DeviceVC: UIViewController, UINavigationControllerDelegate {
         dropDowns.forEach { $0.direction = .bottom }
         ChooseOnDropDown()
         
+        tblDevice.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.new, context: nil)
+        
 #if targetEnvironment(simulator)
         _ = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(timerAction), userInfo: nil, repeats: true)
 #endif
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        tblDevice.layer.removeAllAnimations()
+        tableViewHeight.constant = tblDevice.contentSize.height
+        UIView.animate(withDuration: 0.5) {
+            self.updateViewConstraints()
+        }
+
     }
     
     // TODO: For testing purpose
@@ -96,8 +109,10 @@ class DeviceVC: UIViewController, UINavigationControllerDelegate {
         let NTT = NTA + NTB
         
         frame += ";TIME;11-11-20;06:13:37;UNIT;kg;GWA;\(GWA);GWB;\(GWB);NTA;\(NTA);NTB;\(NTB);GWT;\(GWT);NTT;\(NTT);CKS;48;"
+        //";TIME;11-11-20;06:13:37;UNIT;kg;GWA;5000;GWB;6000;GWC;4658;GWD;8000;NTA;1007;NTB;2076;NTC;4658;NTD;9432;GWT;17173;NTT;17173;CKS;48;"
         //";TIME;11-11-20;06:13:37;UNIT;pound;GWA;5000;GWB;7000;NTA;6000;NTB;9000;GWT;12000;NTT;15000;CKS;48;"
         //";TIME;11-11-20;06:13:37;UNIT;kg;GWA;\(GWA);GWB;\(GWB);NTA;\(NTA);NTB;\(NTB);GWT;\(GWT);NTT;\(NTT);CKS;48;"
+        //";TIME;11-11-20;06:13:37;UNIT;kg;GWA;5000;GWB;6000;GWC;4658;GWD;8000;NTA;1007;NTB;2076;NTC;4658;NTD;9432;GWT;17173;NTT;17173;CKS;48;"
 
         let stringArray = frame.match()
         
@@ -120,6 +135,65 @@ class DeviceVC: UIViewController, UINavigationControllerDelegate {
                 i = i + 1
             }
             ReciveDic = dic
+            
+            channelArray.removeAll()
+            
+            if dic["GWA"] != nil {
+                channelArray.append("A")
+            }
+            
+            if dic["GWB"] != nil {
+                channelArray.append("B")
+            }
+            
+            if dic["GWC"] != nil {
+                channelArray.append("C")
+            }
+            
+            if dic["GWD"] != nil {
+                channelArray.append("D")
+            }
+            
+            if dic["GWE"] != nil {
+                channelArray.append("E")
+            }
+            
+            if dic["GWF"] != nil {
+                channelArray.append("F")
+            }
+            
+            if dic["GWG"] != nil {
+                channelArray.append("G")
+            }
+            
+            if dic["GWH"] != nil {
+                channelArray.append("H")
+            }
+            
+            if dic["GWI"] != nil {
+                channelArray.append("I")
+            }
+            
+            if dic["GWJ"] != nil {
+                channelArray.append("J")
+            }
+            
+            if dic["GWK"] != nil {
+                channelArray.append("K")
+            }
+            
+            if dic["GWL"] != nil {
+                channelArray.append("L")
+            }
+            
+            if dic["GWS"] != nil {
+                channelArray.append("S")
+            }
+            
+            if dic["GWTAG"] != nil {
+                channelArray.append("TAG")
+            }
+            
             frame = frame.replacingOccurrences(of: str, with: "")
             
             if currentTextField == nil {
@@ -156,8 +230,8 @@ class DeviceVC: UIViewController, UINavigationControllerDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
-        pauseASound()
-        pauseBSound()
+        
+        
     }
     
 //    @objc func fire()
@@ -312,48 +386,8 @@ class DeviceVC: UIViewController, UINavigationControllerDelegate {
         }
         
     }
-    // MARK: - Sound Play/Puase
-    func playASound(){
-        if UserDefaults.getString(forKey: Constant.UserDefaultsKey.alarmSound) != "off"{
-//            let url = Bundle.main.url(forResource: "AnchhorEasy_FCM", withExtension: "wav")
-//            playerA = try! AVAudioPlayer(contentsOf: url!)
-//            playerA.play()
-//            DispatchQueue.main.async {
-//                AlarmPlayer.shared.playAlertSound()
-//            }
-        }
-    }
-    func pauseASound(){
-        if UserDefaults.getString(forKey: Constant.UserDefaultsKey.alarmSound) != "off"{
-//            if playerA != nil {
-//                if playerA.isPlaying {
-//                    playerA.stop()
-//                    playerA = nil
-//                }
-//            }
-//            DispatchQueue.main.async {
-//                AlarmPlayer.shared.stopAlertSound()
-//            }
-        }
-    }
-    func playBSound(){
-        if UserDefaults.getString(forKey: Constant.UserDefaultsKey.alarmSound) != "off"{
-//            let url = Bundle.main.url(forResource: "AnchhorEasy_FCM", withExtension: "wav")
-//            playerB = try! AVAudioPlayer(contentsOf: url!)
-//            playerB.play()
-//            AlarmPlayer.shared.playAlertSound()
-        }
-    }
-    func pauseBSound(){
-        if UserDefaults.getString(forKey: Constant.UserDefaultsKey.alarmSound) != "off"{
-//            if playerB != nil {
-//                playerB.stop()
-//                playerB = nil
-//            }
-//            AlarmPlayer.shared.stopAlertSound()
-        }
-    }
     
+    // MARK: - Sound Play/Puase
     func playLimitsSound() {
         
         var isOverLimit = false
@@ -439,95 +473,85 @@ extension DeviceVC: UITableViewDelegate, UITableViewDataSource {
             }
             
             if btnType == "gross" {
-                if indexPath.row == 0{
-                    cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LGLimitA))"
-                    cell.txtWeights.text = (ReciveDic["GWA"] ?? "").convertValues(convert: isConvert, kg: isConvert, settingKg: false)
-                    if cell.txtLimit.text == "0"{
-                        cell.txtLimit.text = ""
-                        pauseASound()
+                
+                let key = "GW" + channelArray[indexPath.row]
+                
+                cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LGLimitA))"
+                cell.txtWeights.text = (ReciveDic[key] ?? "").convertValues(convert: isConvert, kg: isConvert, settingKg: false)
+                if cell.txtLimit.text == "0"{
+                    cell.txtLimit.text = ""
+                    cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
+                } else{
+                    if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LGLimitA) >= Int(ReciveDic[key]!.convertValues(convert: isConvert, kg: isConvert, settingKg: false))!{
                         cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
                     }
                     else{
-                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LGLimitA) >= Int(ReciveDic["GWA"]!.convertValues(convert: isConvert, kg: isConvert, settingKg: false))!{
-                            // Pause
-                            pauseASound()
-                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
-                        }
-                        else{
-                            // Play
-                            playASound()
-                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
-                        }
+                        cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
                     }
                 }
-                else{
-                    cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LGLimitB))"
-                    cell.txtWeights.text = (ReciveDic["GWB"] ?? "").convertValues(convert: isConvert, kg: isConvert, settingKg: false)
-                    if cell.txtLimit.text == "0"{
-                        cell.txtLimit.text = ""
-                        pauseBSound()
-                        cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
-                    }
-                    else{
-                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LGLimitB) >= Int(ReciveDic["GWB"]!.convertValues(convert: isConvert, kg: isConvert, settingKg: false))!{
-                            // Pause
-                            pauseBSound()
-                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
-                        }
-                        else{
-                            // Play
-                            playBSound()
-                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
-                        }
-                    }
-                }
+                
+                
+//                if indexPath.row == 0{
+//
+//                }
+//                else{
+//                    cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LGLimitB))"
+//                    cell.txtWeights.text = (ReciveDic["GWB"] ?? "").convertValues(convert: isConvert, kg: isConvert, settingKg: false)
+//                    if cell.txtLimit.text == "0"{
+//                        cell.txtLimit.text = ""
+//                        cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
+//                    }
+//                    else{
+//                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LGLimitB) >= Int(ReciveDic["GWB"]!.convertValues(convert: isConvert, kg: isConvert, settingKg: false))!{
+//                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
+//                        }
+//                        else{
+//                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
+//                        }
+//                    }
+//                }
                 setupView()
                 lblWeightTotal.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
                 lblWeightTotal.text = (ReciveDic["GWT"] ?? "").convertValues(convert: isConvert, kg: isConvert, settingKg: false)
             }
             else{
-                if indexPath.row == 0{
-                    cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LNLimitA))"
-                    cell.txtWeights.text = (ReciveDic["NTA"] ?? "").convertValues(convert: isConvert, kg: isConvert, settingKg: false)
-                    if cell.txtLimit.text == "0"{
-                        cell.txtLimit.text = ""
-                        pauseASound()
-                        cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
-                    }
-                    else{
-                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LNLimitA) >= Int(ReciveDic["NTA"]!.convertValues(convert: isConvert, kg: isConvert, settingKg: false))!{
-                            // Pause
-                            pauseASound()
-                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
-                        }
-                        else{
-                            // Play
-                            playASound()
-                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
-                        }
-                    }
+                
+                let key = "NT" + channelArray[indexPath.row]
+                
+                cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LNLimitA))"
+                cell.txtWeights.text = (ReciveDic[key] ?? "").convertValues(convert: isConvert, kg: isConvert, settingKg: false)
+                if cell.txtLimit.text == "0"{
+                    cell.txtLimit.text = ""
+                    cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
                 }
                 else{
-                    cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LNLimitB))"
-                    cell.txtWeights.text = (ReciveDic["NTB"] ?? "").convertValues(convert: isConvert, kg: isConvert, settingKg: false)
-                    if cell.txtLimit.text == "0"{
-                        cell.txtLimit.text = ""
-                        pauseBSound()
+                    if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LNLimitA) >= Int(ReciveDic[key]!.convertValues(convert: isConvert, kg: isConvert, settingKg: false))!{
                         cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
                     }
                     else{
-                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LNLimitB) >= Int(ReciveDic["NTB"]!.convertValues(convert: isConvert, kg: isConvert, settingKg: false))!{
-                            // Pause
-                            pauseBSound()
-                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
-                        }
-                        else{
-                            // Play
-                            playBSound()
-                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
-                        }
+                        cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
                     }
                 }
+                
+//                if indexPath.row == 0{
+//
+//                }
+//                else{
+//                    cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LNLimitB))"
+//                    cell.txtWeights.text = (ReciveDic["NTB"] ?? "").convertValues(convert: isConvert, kg: isConvert, settingKg: false)
+//                    if cell.txtLimit.text == "0"{
+//                        cell.txtLimit.text = ""
+//                        cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
+//                    }
+//                    else{
+//                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.LNLimitB) >= Int(ReciveDic["NTB"]!.convertValues(convert: isConvert, kg: isConvert, settingKg: false))!{
+//                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
+//                        }
+//                        else{
+//                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
+//                        }
+//                    }
+//                }
                 setupView()
                 lblWeightTotal.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
                 lblWeightTotal.text = (ReciveDic["NTT"] ?? "").convertValues(convert: isConvert, kg: isConvert, settingKg: false)
@@ -542,95 +566,85 @@ extension DeviceVC: UITableViewDelegate, UITableViewDataSource {
             }
             
             if btnType == "gross" {
-                if indexPath.row == 0{
-                    cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KGLimitA))"
-                    cell.txtWeights.text = (ReciveDic["GWA"] ?? "").convertValues(convert: isConvert, kg: !isConvert, settingKg: true)
-                    if cell.txtLimit.text == "0"{
-                        cell.txtLimit.text = ""
-                        pauseASound()
-                        cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
-                    }
-                    else{
-                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KGLimitA) >= Int(ReciveDic["GWA"]!.convertValues(convert: isConvert, kg: !isConvert, settingKg: true))!{
-                            // Pause
-                            pauseASound()
-                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
-                        }
-                        else{
-                            // Play
-                            playASound()
-                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
-                        }
-                    }
+                
+                let key = "GW" + channelArray[indexPath.row]
+                
+                cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KGLimitA))"
+                cell.txtWeights.text = (ReciveDic[key] ?? "").convertValues(convert: isConvert, kg: !isConvert, settingKg: true)
+                if cell.txtLimit.text == "0"{
+                    cell.txtLimit.text = ""
+                    cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
                 }
                 else{
-                    cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KGLimitB))"
-                    cell.txtWeights.text = (ReciveDic["GWB"] ?? "").convertValues(convert: isConvert, kg: !isConvert, settingKg: true)
-                    if cell.txtLimit.text == "0"{
-                        cell.txtLimit.text = ""
-                        pauseBSound()
+                    if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KGLimitA) >= Int(ReciveDic[key]!.convertValues(convert: isConvert, kg: !isConvert, settingKg: true))!{
                         cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
                     }
                     else{
-                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KGLimitB) >= Int(ReciveDic["GWB"]!.convertValues(convert: isConvert, kg: !isConvert, settingKg: true))!{
-                            // Pause
-                            pauseBSound()
-                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
-                        }
-                        else{
-                            // Play
-                            playBSound()
-                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
-                        }
+                        cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
                     }
                 }
+                
+//                if indexPath.row == 0{
+//
+//                }
+//                else{
+//                    cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KGLimitB))"
+//                    cell.txtWeights.text = (ReciveDic["GWB"] ?? "").convertValues(convert: isConvert, kg: !isConvert, settingKg: true)
+//                    if cell.txtLimit.text == "0"{
+//                        cell.txtLimit.text = ""
+//                        cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
+//                    }
+//                    else{
+//                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KGLimitB) >= Int(ReciveDic["GWB"]!.convertValues(convert: isConvert, kg: !isConvert, settingKg: true))!{
+//                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
+//                        }
+//                        else{
+//                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
+//                        }
+//                    }
+//                }
                 setupView()
                 lblWeightTotal.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
                 lblWeightTotal.text = (ReciveDic["GWT"] ?? "").convertValues(convert: isConvert, kg: !isConvert, settingKg: true)
             }
             else{
-                if indexPath.row == 0{
-                    cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KNLimitA))"
-                    cell.txtWeights.text = (ReciveDic["NTA"] ?? "").convertValues(convert: isConvert, kg: !isConvert, settingKg: true)
-                    if cell.txtLimit.text == "0"{
-                        cell.txtLimit.text = ""
-                        pauseASound()
-                        cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
-                    }
-                    else{
-                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KNLimitA) >= Int(ReciveDic["NTA"]!.convertValues(convert: isConvert, kg: !isConvert, settingKg: true))!{
-                            // Pause
-                            pauseASound()
-                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
-                        }
-                        else{
-                            // Play
-                            playASound()
-                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
-                        }
-                    }
+                
+                let key = "NT" + channelArray[indexPath.row]
+                
+                cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KNLimitA))"
+                cell.txtWeights.text = (ReciveDic[key] ?? "").convertValues(convert: isConvert, kg: !isConvert, settingKg: true)
+                if cell.txtLimit.text == "0"{
+                    cell.txtLimit.text = ""
+                    cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
                 }
                 else{
-                    cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KNLimitB))"
-                    cell.txtWeights.text = (ReciveDic["NTB"] ?? "").convertValues(convert: isConvert, kg: !isConvert, settingKg: true)
-                    if cell.txtLimit.text == "0"{
-                        cell.txtLimit.text = ""
-                        pauseBSound()
+                    if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KNLimitA) >= Int(ReciveDic[key]!.convertValues(convert: isConvert, kg: !isConvert, settingKg: true))!{
                         cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
                     }
                     else{
-                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KNLimitB) >= Int(ReciveDic["NTB"]!.convertValues(convert: isConvert, kg: !isConvert, settingKg: true))!{
-                            // Pause
-                            pauseBSound()
-                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
-                        }
-                        else{
-                            // Play
-                            playBSound()
-                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
-                        }
+                        cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
                     }
                 }
+                
+//                if indexPath.row == 0{
+//
+//                }
+//                else{
+//                    cell.txtLimit.text = "\(UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KNLimitB))"
+//                    cell.txtWeights.text = (ReciveDic["NTB"] ?? "").convertValues(convert: isConvert, kg: !isConvert, settingKg: true)
+//                    if cell.txtLimit.text == "0"{
+//                        cell.txtLimit.text = ""
+//                        cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
+//                    }
+//                    else{
+//                        if UserDefaults.getInt(forKey: Constant.UserDefaultsKey.KNLimitB) >= Int(ReciveDic["NTB"]!.convertValues(convert: isConvert, kg: !isConvert, settingKg: true))!{
+//                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.6823529412, blue: 0.003921568627, alpha: 1)
+//                        }
+//                        else{
+//                            cell.btnChannel.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
+//                        }
+//                    }
+//                }
                 setupView()
                 lblWeightTotal.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
                 lblWeightTotal.text = (ReciveDic["NTT"] ?? "").convertValues(convert: isConvert, kg: !isConvert, settingKg: true)
@@ -829,6 +843,65 @@ extension DeviceVC: CBPeripheralDelegate, CBCentralManagerDelegate {
             
             print(dic)
             ReciveDic = dic
+            
+            channelArray.removeAll()
+            
+            if dic["GWA"] != nil {
+                channelArray.append("A")
+            }
+            
+            if dic["GWB"] != nil {
+                channelArray.append("B")
+            }
+            
+            if dic["GWC"] != nil {
+                channelArray.append("C")
+            }
+            
+            if dic["GWD"] != nil {
+                channelArray.append("D")
+            }
+            
+            if dic["GWE"] != nil {
+                channelArray.append("E")
+            }
+            
+            if dic["GWF"] != nil {
+                channelArray.append("F")
+            }
+            
+            if dic["GWG"] != nil {
+                channelArray.append("G")
+            }
+            
+            if dic["GWH"] != nil {
+                channelArray.append("H")
+            }
+            
+            if dic["GWI"] != nil {
+                channelArray.append("I")
+            }
+            
+            if dic["GWJ"] != nil {
+                channelArray.append("J")
+            }
+            
+            if dic["GWK"] != nil {
+                channelArray.append("K")
+            }
+            
+            if dic["GWL"] != nil {
+                channelArray.append("L")
+            }
+            
+            if dic["GWS"] != nil {
+                channelArray.append("S")
+            }
+            
+            if dic["GWTAG"] != nil {
+                channelArray.append("TAG")
+            }
+            
             if currentTextField == nil {
                 tblDevice.reloadData()
             }
